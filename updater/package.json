@@ -1,0 +1,13 @@
+{
+  "main": "main.js",
+  "version": "1.0.0",
+  "dependencies": {
+    "libprisbeam": "git+https://source.equestria.dev/equestria.dev/libprisbeam.git/",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "electron": "^29.1.6",
+    "electron-packager": "^17.1.2",
+    "electron-rebuild": "^3.2.9"
+  }
+}

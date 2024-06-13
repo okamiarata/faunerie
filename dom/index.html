@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prisbeam</title>
+    <link rel="stylesheet" href="../bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="./app.css">
+    <script src="../bootstrap/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <div class="modal fade" id="login">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="derpibooru-login-initial">
+                        <p>Log into your Derpibooru account on Prisbeam to access your filters, watched tags, and more. All the information about your Derpibooru account is encrypted and stored securely on your own device.</p>
+                        <div style="display: grid; grid-template-columns: 1fr 2fr; grid-column-gap: 10px; grid-row-gap: 5px;">
+                            <div style="display: flex; align-items: center;">
+                                <label for="derpibooru-email" class="col-form-label">Email address:</label>
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <input required type="email" id="derpibooru-email" class="form-control form-control-sm">
+                            </div>
+
+                            <div style="display: flex; align-items: center;">
+                                <label for="derpibooru-password" class="col-form-label">Password:</label>
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <input required type="password" id="derpibooru-password" class="form-control form-control-sm">
+                            </div>
+                        </div>
+
+                        <div style="text-align: right; margin-top: 10px;">
+                            <button class="btn btn-primary" id="derpibooru-confirm-btn" onclick="instance.derpibooru.submitLogin();">Continue</button>
+                        </div>
+                    </div>
+                    <div id="derpibooru-login-2fa" style="display: none;">
+                        <p>Because you have enabled two-factor authentication on your Derpibooru account, you now need to enter a time-based code. Open your authenticator app and enter the code below.</p>
+                        <div style="display: grid; grid-template-columns: 1fr 2fr; grid-column-gap: 10px; grid-row-gap: 5px;">
+                            <div style="display: flex; align-items: center;">
+                                <label for="derpibooru-email" class="col-form-label">2FA code:</label>
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <input required type="number" id="derpibooru-2fa" class="form-control form-control-sm">
+                            </div>
+                        </div>
+
+                        <div style="text-align: right; margin-top: 10px;">
+                            <button class="btn btn-primary" id="derpibooru-confirm-btn2" onclick="instance.derpibooru.submit2fa();">Continue</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="loader" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="progress-outer">
+                        <div class="progress" style="margin-bottom: 10px;">
+                            <div id="progress" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%; transition: none !important;"></div>
+                        </div>
+                        <span id="load" style="white-space: nowrap; overflow: hidden !important; text-overflow: ellipsis; display: block;">Initializing application...</span>
+                    </div>
+                    <div id="progress2-outer" style="display: none; margin-top: 10px;">
+                        <div>
+                            <div class="progress" style="margin-bottom: 10px;">
+                                <div id="progress2" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%; transition: none !important;"></div>
+                            </div>
+                            <span id="load2" style="white-space: nowrap; overflow: hidden !important; text-overflow: ellipsis; display: block;">Initializing application...</span>
+                        </div>
+                    </div>
+                    <div id="progress3-outer" style="display: none; margin-top: 10px;">
+                        <div>
+                            <div class="progress" style="margin-bottom: 10px;">
+                                <div id="progress3" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%; transition: none !important;"></div>
+                            </div>
+                            <span id="load3" style="white-space: nowrap; overflow: hidden !important; text-overflow: ellipsis; display: block;">Initializing application...</span>
+                        </div>
+                    </div>
+                    <div id="loader-errors" style="display: none;">
+                        <hr>
+                        <ul class="list-group" id="loader-errors-list"></ul>
+                        <span tabindex="-1" id="loading-btn" onclick="instance.finishLoading();" class="btn btn-primary disabled" style="float: right; margin-top: 15px;">Continue</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="app" class="container disabled" style="padding-top: 50px;">
+        <div style="-webkit-app-region: drag; position: fixed; top: 0; left: 0; right: 0; backdrop-filter: blur(50px); background-color: rgba(33,33,33,0.75); border-bottom: 1px solid #111;" id="filter-bar">
+            <div style="display: grid; grid-template-columns: minmax(130px, 1fr) 2fr minmax(260px, 1fr); grid-gap: 10px;">
+                <div style="text-align: center;">
+                    <a class="fancy-btn" id="logo" onclick="instance.actions.goHome();" href="#" style="padding: 5px 10px; display: inline-block; color: white; text-decoration: none; -webkit-app-region: no-drag;">
+                        <img alt="Logo" src="../logo/logo.png" style="width: 32px; height: 32px; border-radius: 5px; vertical-align: middle;">
+                        <span>&nbsp;Prisbeam</span>
+                    </a>
+                </div>
+                <input tabindex="-1" autocomplete="false" autocapitalize="off" spellcheck="false" onblur="instance.dataStore.lastPress = new Date().getTime() - 5000; instance.dataStore.needUpdate = true;" onkeyup="instance.dataStore.lastPress = new Date().getTime(); instance.dataStore.needUpdate = true;" class="form-control" placeholder="Search in your images..." id="search" style="-webkit-app-region: no-drag;">
+                <div style="text-align: center;">
+                    <div class="btn-group" style="-webkit-app-region: no-drag;">
+                        <input tabindex="-1" onchange="instance.display.setRating('safe'); instance.display.updateDisplay();" type="checkbox" class="btn-check" id="rating-safe" checked autocomplete="off">
+                        <label title="Clean" data-bs-toggle="tooltip" data-bs-placement="bottom" class="btn btn-outline-primary" for="rating-safe">C</label>
+
+                        <input tabindex="-1" onchange="instance.display.setRating('questionable'); instance.display.updateDisplay();" type="checkbox" class="btn-check" id="rating-questionable" autocomplete="off">
+                        <label title="Questionable" data-bs-toggle="tooltip" data-bs-placement="bottom" class="btn btn-outline-primary" for="rating-questionable">Q</label>
+
+                        <input tabindex="-1" onchange="instance.display.setRating('suggestive'); instance.display.updateDisplay();" type="checkbox" class="btn-check" id="rating-suggestive" autocomplete="off">
+                        <label title="Suggestive" data-bs-toggle="tooltip" data-bs-placement="bottom" class="btn btn-outline-primary" for="rating-suggestive">S</label>
+
+                        <input tabindex="-1" onchange="instance.display.setRating('explicit'); instance.display.updateDisplay();" type="checkbox" class="btn-check" id="rating-explicit" autocomplete="off">
+                        <label title="Explicit" data-bs-toggle="tooltip" data-bs-placement="bottom" class="btn btn-outline-primary" for="rating-explicit">E</label>
+
+                        <input tabindex="-1" onchange="instance.display.setRating('grimdark'); instance.display.updateDisplay();" type="checkbox" class="btn-check" id="rating-grimdark" autocomplete="off">
+                        <label title="Violent" data-bs-toggle="tooltip" data-bs-placement="bottom" class="btn btn-outline-primary" for="rating-grimdark">V</label>
+                    </div>
+
+                    <div class="dropdown" style="display: inline-block;position: relative;-webkit-app-region: no-drag;">
+                        <button type="button" class="fancy-btn btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" style="border: none; color: white; padding-bottom: 2px;">
+                            <img id="avatar" alt="" style="width: 32px; height: 32px; position: relative; top: -2px; border-radius: 5px; background-color: #333;" src="../logo/placeholder.jpg">
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li class="derpibooru-when-logged-in" style="display: none;"><a id="user-name" class="dropdown-item disabled" href="#">Loading user info...</a></li>
+                            <li class="derpibooru-when-logged-in" style="display: none;"><a class="dropdown-item" onclick="instance.derpibooru.openManager();" href="#">Manage account</a></li>
+                            <li class="derpibooru-when-logged-in" style="display: none;"><a class="dropdown-item" onclick="instance.derpibooru.logOut();" href="#">Logout</a></li>
+                            <li id="derpibooru-login"><a class="dropdown-item disabled" id="derpibooru-login-btn" onclick="instance.derpibooru.startLoginFlow();" href="#">Login to Derpibooru</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" onclick="instance.settings.repairCorruptions();" href="#">Check for corruptions</a></li>
+                            <li><a class="dropdown-item" onclick="instance.settings.removeOrphans();" href="#">Remove orphan files</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 42px;">
+            <div id="search-error" style="margin-bottom: 20px; margin-top: 20px; display: none;" class="alert alert-danger"></div>
+            <div id="search-warning" style="margin-bottom: 20px; margin-top: 20px; display: none;" class="alert alert-warning"></div>
+            <div id="images" style="margin-bottom: 20px; margin-top: 20px; display: grid; grid-template-columns: repeat(5, 1fr); grid-gap: 10px;"></div>
+            <div style="margin-bottom: 50px; display: grid; grid-template-columns: 1fr max-content;" id="footer">
+                <div id="pages"></div>
+                <div id="sort">
+                    <select tabindex="-1" id="sorting" onchange="instance.display.updateDisplay();" class="form-select" style="width: max-content; display: inline-block;">
+                        <option selected value="new">Sort by date</option>
+                        <optgroup label="Popularity">
+                            <option value="popular">Sort by score</option>
+                            <option value="relevance">Sort by relevance</option>
+                        </optgroup>
+                        <optgroup label="Sizes">
+                            <option value="resolution">Sort by resolution</option>
+                            <option value="size">Sort by size</option>
+                            <option value="duration">Sort by duration</option>
+                        </optgroup>
+                        <optgroup label="Technical">
+                            <option value="id">Sort by image ID</option>
+                            <option value="tag">Sort by tags</option>
+                        </optgroup>
+                    </select>
+                    <select tabindex="-1" id="order" onchange="instance.display.updateDisplay();" class="form-select" style="width: max-content; display: inline-block;">
+                        <option value="up">↑ Ascending</option>
+                        <option selected value="down">↓ Descending</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="preview">
+        <div class="modal-dialog modal-xl" style="--bs-modal-width: calc(100vw - 1.75rem * 2);">
+            <div class="modal-content" style="height: calc(100vh - 1.75rem * 2);">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="preview-title" style="width: 100%;"></h4>
+                    <button tabindex="-1" type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body" style="display: grid; grid-template-columns: 2fr 1fr;">
+                    <div id="preview-content-outer" style="margin-left: -1rem;margin-top: -1rem;margin-bottom: -1rem;">
+                        <div id="preview-content" style="display: flex;align-items: center;justify-content: center; height: 100%;"></div>
+                        <div id="preview-zones" style="position: absolute;"></div>
+                    </div>
+                    <div style="height: calc(100vh - 1.75rem * 2 - 1rem - 55px);overflow: auto;padding-left: 20px;border-left: var(--bs-modal-header-border-width) solid var(--bs-modal-header-border-color);margin-top: -1rem;padding-top: 1rem;margin-bottom: -1rem;padding-bottom: 1rem; display: grid; grid-template-rows: 1fr max-content;">
+                        <div style="margin-bottom: 20px;">
+                            <div id="preview-statistics" class="list-group selectable" style="margin-bottom: 15px;">
+                                <div class="list-group-item" id="preview-artist"></div>
+                                <div class="list-group-item" id="preview-date"></div>
+                                <div class="list-group-item" id="preview-resolution"></div>
+                            </div>
+
+                            <div style="margin-top: 20px; margin-bottom: 5px;"><b>Detected parts:</b></div>
+                            <span id="preview-parts-loader" style="opacity: .5;">Processing...</span>
+                            <span id="preview-parts-none" style="display: none; opacity: .5;">No parts detected</span>
+                            <span id="preview-parts-unsupported" style="display: none; opacity: .5;">Unsupported format</span>
+                            <span id="preview-parts-list" style="display: none;"></span>
+
+                            <div style="margin-top: 20px; margin-bottom: 5px;"><b>Image tags:</b></div>
+                            <span id="preview-tags"></span>
+                        </div>
+                        <div>
+                            <div class="btn-group">
+                                <button tabindex="-1" type="button" class="btn btn-primary" onclick="instance.display.openImageOnSource();" id="preview-source-cta"></button>
+                            </div><span style="float: right; margin-top: 5px;"> Size on disk: <span id="preview-size"></span></span><br>
+                            TODO: Rewrite this
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="close-dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div style="text-align: center;">Saving database... Please wait.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>let loader = require('../src/index.js'); loader.runApp(bootstrap);</script>
+</body>
+</html>

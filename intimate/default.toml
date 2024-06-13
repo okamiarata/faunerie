@@ -1,0 +1,34 @@
+# Welcome to Intimate!
+# Intimate is a new configurable application to help get the best of your time alone.
+#
+# The following file contains various settings you can change to make the app work
+# best for you.
+#
+# Lines starting with # are comments and don't represent a configuration option.
+# Lines with [angled brackets] are sections related to a specific part of the app.
+
+# Change this to true *AFTER* you are done configuring the app.
+configured = false
+
+# This defines a module. See below for a list of supported modules.
+[modules.derpibooru]
+
+# This should match your personal source (e.g. username) with the module in question.
+# For file modules, this is the path of the source directory
+source = "Your Derpibooru username here"
+
+# This is how much content from this module is shown. Note that values higher than 1
+# are possible but not officially supported.
+proportion = 1
+
+# Other modules
+# Configuration of other modules is done similarly to Derpibooru. Simply uncomment
+# (remove the #) the sections you want.
+
+#[modules.e621]
+#source = "Your e621 username here"
+#proportion = 1
+
+#[modules.local]
+#source = "/path/to/your/files"
+#proportion = 1

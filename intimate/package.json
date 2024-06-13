@@ -1,0 +1,12 @@
+{
+  "name": "intimate",
+  "version": "12.1.2",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "electron": "^30.0.2",
+    "toml": "^3.0.0"
+  }
+}

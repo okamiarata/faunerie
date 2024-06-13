@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Intimate</title>
+    <style>
+        * {
+            user-select: none !important;
+            -webkit-user-drag: none !important;
+            color: white;
+            font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans","Liberation Sans",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+            scroll-behavior: smooth;
+            pointer-events: none;
+            cursor: none;
+        }
+
+        #display {
+            opacity: 0;
+            pointer-events: none;
+            transition: 200ms opacity;
+        }
+
+        #display.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+    </style>
+</head>
+<body style="background-color: black; position: fixed; inset: 0;">
+    <div id="display" style="position: fixed; inset: 0; background-color: black; z-index: 10;">
+        <div id="display-osd" style="z-index: 20;"></div>
+        <div id="display-slot-a" style="transition: opacity 500ms; z-index: 15; position: fixed; inset: 0; background-size: contain; background-position: center; background-repeat: no-repeat;">
+            <video id="display-slot-a-video" loop muted style="position: fixed; inset: 0; z-index: 16; height: 100%; width: 100%;"></video>
+        </div>
+        <div id="display-slot-b" style="transition: opacity 500ms; z-index: 15; opacity: 0; position: fixed; inset: 0; background-size: contain; background-position: center; background-repeat: no-repeat;">
+            <video id="display-slot-b-video" loop muted style="position: fixed; inset: 0; z-index: 16; height: 100%; width: 100%;"></video>
+        </div>
+    </div>
+
+    <div id="corner-loader" style="transition: opacity 200ms; opacity: 1; pointer-events: none; position: fixed; bottom: 20px; right: 20px; z-index: 99999;">
+        <img src="loader.svg" alt="Loading..." style="width: 96px; height: 96px;">
+    </div>
+
+    <script src="src/keyboard.js"></script>
+    <script src="src/display.js"></script>
+    <script src="src/actions.js"></script>
+    <script src="src/fetcher.js"></script>
+</body>
+</html>
