@@ -2,7 +2,7 @@
   "main": "main.js",
   "version": "1.0.0",
   "dependencies": {
-    "libprisbeam": "git+https://source.equestria.dev/equestria.dev/libprisbeam.git/",
+    "libprisbeam": "git+https://github.com/equestria-dev/libprisbeam.git/",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
