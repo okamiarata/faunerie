@@ -13,7 +13,7 @@
     "@electron/remote": "^2.1.2",
     "axios": "^1.6.7",
     "fuse.js": "^6.6.2",
-    "libprisbeam": "git+https://github.com/equestria-dev/libprisbeam.git/",
+    "libprisbeam": "github:equestria-dev/libprisbeam",
     "sqlite3": "^5.1.7",
     "systeminformation": "^5.21.11"
   },
