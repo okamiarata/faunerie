@@ -48,7 +48,7 @@ app.whenReady().then(() => {
                     let lines = d.trim().split("\n");
                     let line = lines[lines.length - 1];
 
-                    let lineProcessed = line.replace(/^(\d+) (\d|.)+M .*$/gm, "$1").trim();
+                    let lineProcessed = line.replace(/^(\d+) (\d|\.)+M .*$/gm, "$1").trim();
                     if (lineProcessed !== line && !isNaN(parseInt(lineProcessed))) {
                         percent = lineProcessed;
                     }
@@ -78,7 +78,7 @@ app.whenReady().then(() => {
                     let lines = d.trim().split("\n");
                     let line = lines[lines.length - 1];
 
-                    let lineProcessed = line.replace(/^(\d+) (\d|.)+M .*$/gm, "$1").trim();
+                    let lineProcessed = line.replace(/^(\d+) (\d|\.)+M .*$/gm, "$1").trim();
                     if (lineProcessed !== line && !isNaN(parseInt(lineProcessed))) {
                         percent = lineProcessed;
                     }
