@@ -27,7 +27,10 @@ export class PrisbeamSearch {
             <hr>
             <details>
                 <summary>Show technical information</summary>
-                <pre style='margin-bottom: 0;'>Query: ${query.substring(0, 1024)}${sql ? `\n\nSQL: ${sql.substring(0, 1024)}` : ""}\n\nError dump:\n${e.stack}</pre>
+                <pre style='margin-bottom: 0;'>Query: ${query.substring(0, 1024)}${sql ? `\n\nSQL: ${sql.substring(0, 1024)}` : ""}\n\nError dump:\n${e.stack
+                    .replaceAll("&", "&amp;")
+                    .replaceAll(">", "&gt;")
+                    .replaceAll("<", "&lt;")}</pre>
             </details>
         `;
     }
@@ -85,7 +88,10 @@ export class PrisbeamSearch {
         }
 
         if (e.name === "SearchError" || e.stack.startsWith("SearchError: ")) {
-            return e.message;
+            return e.message
+                .replaceAll("&", "&amp;")
+                .replaceAll(">", "&gt;")
+                .replaceAll("<", "&lt;");
         }
 
         return "An error has occurred while processing your search query";
