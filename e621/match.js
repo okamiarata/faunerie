@@ -1,4 +1,4 @@
-const PATH = require('fs').readFileSync(require('os').homedir() + "/.prisbeam_path").toString().trim();
+const PATH = require('fs').readFileSync(require('os').homedir() + "/.faunerie_path").toString().trim();
 
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database(PATH, sqlite3.OPEN_READONLY);

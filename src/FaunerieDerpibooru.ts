@@ -1,4 +1,4 @@
-import {PrisbeamApp} from "./PrisbeamApp";
+import {FaunerieApp} from "./FaunerieApp";
 import {BrowserWindow, shell} from "@electron/remote";
 import {BrowserWindow as TBrowserWindow, SafeStorage} from "electron";
 
@@ -18,13 +18,13 @@ interface DerpibooruJSDataStore {
     watchedTagList: number[];
 }
 
-export class PrisbeamDerpibooru {
-    instance: PrisbeamApp;
+export class FaunerieDerpibooru {
+    instance: FaunerieApp;
     enabled: boolean;
     window: TBrowserWindow;
     dataStore: DerpibooruJSDataStore;
 
-    constructor(instance: PrisbeamApp) {
+    constructor(instance: FaunerieApp) {
         this.instance = instance;
         this.enabled = null;
     }
@@ -186,7 +186,7 @@ export class PrisbeamDerpibooru {
     }
 
     async logOut() {
-        if (confirm("Are you sure you want to log out from Derpibooru? Any features using Derpibooru will stop working and your Derpibooru user data will be removed from Prisbeam.")) {
+        if (confirm("Are you sure you want to log out from Derpibooru? Any features using Derpibooru will stop working and your Derpibooru user data will be removed from Faunerie.")) {
             await this.instance.propertyStore.removeItem("pba_derpibooru_user_name");
             await this.instance.propertyStore.removeItem("pba_derpibooru_key_encrypted");
             await this.instance.propertyStore.removeItem("pba_derpibooru_avatar");

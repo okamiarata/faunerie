@@ -3,7 +3,7 @@
   "version": "3.0.4",
   "scripts": {
     "install": "cd updater && npm install && cd ..",
-    "postinstall": "echo \"============================\n\nThank you for developing on Prisbeam!\n\n- Run 'npm run build' to build TypeScript code\n- Run 'npm run debug' to start the application in debug mode\n- Run 'npm run debug-updater' to start Prisbeam Updater in debug mode\n- Run 'npm run release' to build the release application\n\n============================\"",
+    "postinstall": "echo \"============================\n\nThank you for developing on Faunerie!\n\n- Run 'npm run build' to build TypeScript code\n- Run 'npm run debug' to start the application in debug mode\n- Run 'npm run debug-updater' to start Faunerie Updater in debug mode\n- Run 'npm run release' to build the release application\n\n============================\"",
     "build": "cd src && tsc && cd ..",
     "debug": "npm run build && electron main.js",
     "debug-updater": "npm run build && cd updater && npx electron main.js && cd ..",
@@ -13,7 +13,7 @@
     "@electron/remote": "^2.1.2",
     "axios": "^1.6.7",
     "fuse.js": "^6.6.2",
-    "libprisbeam": "github:equestria-dev/libprisbeam",
+    "libfaunerie": "github:equestria-dev/libfaunerie",
     "sqlite3": "^5.1.7",
     "systeminformation": "^5.21.11"
   },

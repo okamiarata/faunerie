@@ -1,14 +1,14 @@
-import {PrisbeamApp} from "./PrisbeamApp";
+import {FaunerieApp} from "./FaunerieApp";
 import {ipcRenderer} from "electron";
 import * as si from "systeminformation";
 import fs from "fs";
-import {Prisbeam, PrisbeamListType} from "libprisbeam";
+import {Faunerie, FaunerieListType} from "libfaunerie";
 
-export class PrisbeamLoader {
-    instance: PrisbeamApp;
+export class FaunerieLoader {
+    instance: FaunerieApp;
     dataPath: string;
 
-    constructor(instance: PrisbeamApp) {
+    constructor(instance: FaunerieApp) {
         this.instance = instance;
     }
 
@@ -142,7 +142,7 @@ export class PrisbeamLoader {
         let valid = false;
 
         try {
-            valid = (await fs.promises.lstat(_dataStore.appData + "/PrisbeamCache/current.pbdb")).isFile();
+            valid = (await fs.promises.lstat(_dataStore.appData + "/FaunerieCache/current.pbdb")).isFile();
         } catch (e) {
             valid = false;
         }
@@ -150,7 +150,7 @@ export class PrisbeamLoader {
         if (valid) {
             this.instance.loadingError("No valid image source found, images will be downloaded from their source");
             _dataStore.loadedFromCache = true;
-            return _dataStore.appData + "/PrisbeamCache";
+            return _dataStore.appData + "/FaunerieCache";
         } else {
             alert("Unable to load images from cache as the cache is empty or corrupted.");
             this.instance.dataStore.unloaded = true;
@@ -169,7 +169,7 @@ export class PrisbeamLoader {
         if (validSources.length > 0) {
             return this.openFirstSource(validSources);
         } else {
-            if (fs.existsSync(_dataStore.appData + "/PrisbeamCache")) {
+            if (fs.existsSync(_dataStore.appData + "/FaunerieCache")) {
                 return await this.loadFromCache();
             } else {
                 await this.triggerInvalidSource(list);
@@ -205,7 +205,7 @@ export class PrisbeamLoader {
             }
 
             if (isUpdating) {
-                alert("This database is locked because an external Prisbeam Updater is updating its content. Please try again later.");
+                alert("This database is locked because an external Faunerie Updater is updating its content. Please try again later.");
                 this.instance.dataStore.unloaded = true;
                 window.close();
             }
@@ -215,7 +215,7 @@ export class PrisbeamLoader {
     async initializeDatabase() {
         let _dataStore = this.instance.dataStore;
 
-        _dataStore.database = new Prisbeam({
+        _dataStore.database = new Faunerie({
             database: this.dataPath,
             cachePath: _dataStore.appData,
             sqlitePath: process.platform === "darwin" ? "../../../sql/mac" : "../../../sql/win",
@@ -235,8 +235,8 @@ export class PrisbeamLoader {
             document.getElementById("progress").classList.remove("progress-bar-striped");
             document.getElementById("progress").style.width = "0%";
 
-            if (!fs.existsSync(_dataStore.appData + "/PrisbeamCache")) await fs.promises.mkdir(_dataStore.appData + "/PrisbeamCache");
-            await fs.promises.copyFile(this.dataPath + "/current.pbdb", _dataStore.appData + "/PrisbeamCache/current.pbdb");
+            if (!fs.existsSync(_dataStore.appData + "/FaunerieCache")) await fs.promises.mkdir(_dataStore.appData + "/FaunerieCache");
+            await fs.promises.copyFile(this.dataPath + "/current.pbdb", _dataStore.appData + "/FaunerieCache/current.pbdb");
 
             document.getElementById("progress").style.width = "100%";
         }
@@ -245,7 +245,7 @@ export class PrisbeamLoader {
     async completeLoading() {
         let _dataStore = this.instance.dataStore;
 
-        _dataStore.db = await _dataStore.database.frontend.getAllImages(PrisbeamListType.Object);
+        _dataStore.db = await _dataStore.database.frontend.getAllImages(FaunerieListType.Object);
         _dataStore.tags = _dataStore.database.frontend.tags;
         _dataStore.tagsHashed = _dataStore.database.frontend.tagsHashed;
 

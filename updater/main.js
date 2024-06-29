@@ -4,19 +4,19 @@ require('os').setPriority(19);
 
 const { app, Tray, Menu, shell } = require('electron');
 const fs = require('fs');
-const libprisbeam = require('libprisbeam');
+const libfaunerie = require('libfaunerie');
 const execCb = require('child_process').exec;
 
 let tray = null;
 
 app.whenReady().then(() => {
     const config = app.getPath("userData");
-    if (!fs.existsSync(config + "/database.txt")) fs.writeFileSync(config + "/database.txt", "# Insert the full path to your Prisbeam database below:\n\n# Insert your Derpibooru username below:\n\n# (if you have not registered for Prisbeam Cloud, please contact Equestria.dev)");
+    if (!fs.existsSync(config + "/database.txt")) fs.writeFileSync(config + "/database.txt", "# Insert the full path to your Faunerie database below:\n\n# Insert your Derpibooru username below:\n\n# (if you have not registered for Faunerie Cloud, please contact Equestria.dev)");
     if (!fs.existsSync(config + "/last.txt")) fs.writeFileSync(config + "/last.txt", "0");
 
     if (process.platform === "darwin") app.dock.hide();
     tray = new Tray(__dirname + "/tray/16x16Template@2x.png");
-    tray.setToolTip("Prisbeam Updater");
+    tray.setToolTip("Faunerie Updater");
 
     let update = null;
 
@@ -100,7 +100,7 @@ app.whenReady().then(() => {
 
             fs.writeFileSync(databasePath + "/updater.pbmk", process.pid.toString());
 
-            let database = new libprisbeam.Prisbeam({
+            let database = new libfaunerie.Faunerie({
                 database: databasePath,
                 cachePath: config + "/temp",
                 sqlitePath: process.platform === "darwin" ? "../../../sql/mac" : "../../../sql/win",
@@ -110,7 +110,7 @@ app.whenReady().then(() => {
             });
             await database.initialize(true);
 
-            let updater = new libprisbeam.PrisbeamUpdater(database);
+            let updater = new libfaunerie.FaunerieUpdater(database);
             await updater.updateFromPreprocessed(config + "/temp/preprocessed.db", config + "/temp/tags.db", (status) => {
                 update = status;
                 updateTray();
@@ -132,7 +132,7 @@ app.whenReady().then(() => {
 
     function updateTray() {
         let template = [
-            { label: "Prisbeam Updater", type: 'normal', enabled: false, icon: __dirname + "/menu/16x16@2x.png" },
+            { label: "Faunerie Updater", type: 'normal', enabled: false, icon: __dirname + "/menu/16x16@2x.png" },
 
             { type: 'separator' },
         ];
@@ -149,7 +149,7 @@ app.whenReady().then(() => {
 
                     { type: 'separator' },
 
-                    { label: "Open Prisbeam", enabled: false },
+                    { label: "Open Faunerie", enabled: false },
                 ]);
             } else {
                 template.push(...[
@@ -164,7 +164,7 @@ app.whenReady().then(() => {
 
                     { type: 'separator' },
 
-                    { label: "Open Prisbeam", enabled: false, },
+                    { label: "Open Faunerie", enabled: false, },
                 ]);
             }
         } else {
@@ -179,7 +179,7 @@ app.whenReady().then(() => {
 
                 { type: 'separator' },
 
-                { label: "Open Prisbeam", enabled: false },
+                { label: "Open Faunerie", enabled: false },
             ]);
         }
 

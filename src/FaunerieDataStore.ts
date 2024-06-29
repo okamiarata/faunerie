@@ -1,14 +1,14 @@
-import {PrisbeamApp} from "./PrisbeamApp";
-import {Prisbeam} from "libprisbeam";
+import {FaunerieApp} from "./FaunerieApp";
+import {Faunerie} from "libfaunerie";
 
-export class PrisbeamDataStore {
+export class FaunerieDataStore {
     public loaded: boolean;
     public loadedFromCache: boolean;
     public hadErrorsLoading: boolean;
     public searching: boolean;
     public source: string;
     public appData: string;
-    public database: Prisbeam;
+    public database: Faunerie;
     public db: object;
     public tags: any[][];
     public tagsHashed: object;
@@ -26,7 +26,7 @@ export class PrisbeamDataStore {
     public lastPress: number;
     public close: boolean;
 
-    constructor(instance: PrisbeamApp) {
+    constructor(instance: FaunerieApp) {
         let bootstrap = instance.bootstrap;
 
         this.page = 1;

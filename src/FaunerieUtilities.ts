@@ -1,4 +1,4 @@
-export class PrisbeamUtilities {
+export class FaunerieUtilities {
     static timeAgo(time: number | Date | string) {
         if (!isNaN(parseInt(time as string))) {
             time = new Date(time).getTime();

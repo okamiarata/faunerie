@@ -1,12 +1,12 @@
-import {PrisbeamApp} from "./PrisbeamApp";
+import {FaunerieApp} from "./FaunerieApp";
 import * as fs from "node:fs";
 import * as path from "node:path";
-import {PrisbeamImageType, PrisbeamListType} from "libprisbeam";
+import {FaunerieImageType, FaunerieListType} from "libfaunerie";
 
-export class PrisbeamSettings {
-    instance: PrisbeamApp;
+export class FaunerieSettings {
+    instance: FaunerieApp;
 
-    constructor(instance: PrisbeamApp) {
+    constructor(instance: FaunerieApp) {
         this.instance = instance;
     }
 
@@ -176,7 +176,7 @@ export class PrisbeamSettings {
                     instance.loadingError("Image " + i.id + " is corrupted");
                     res(true);
                 }
-                img.src = _dataStore.database.frontend.getImageFile(i, PrisbeamImageType.ViewURL);
+                img.src = _dataStore.database.frontend.getImageFile(i, FaunerieImageType.ViewURL);
             }
 
             let imageIsCorrupted: Function;
@@ -192,7 +192,7 @@ export class PrisbeamSettings {
                 instance.loadingError("Image " + i.id + " is corrupted");
                 res(true);
             }
-            img.src = _dataStore.database.frontend.getImageFile(i, PrisbeamImageType.ThumbnailURL);
+            img.src = _dataStore.database.frontend.getImageFile(i, FaunerieImageType.ThumbnailURL);
         });
     }
 
@@ -246,7 +246,7 @@ export class PrisbeamSettings {
 
         document.getElementById("progress").style.width = "0%";
 
-        for (let image of await _dataStore.database.frontend.getAllImages(PrisbeamListType.Array) as any[]) {
+        for (let image of await _dataStore.database.frontend.getAllImages(FaunerieListType.Array) as any[]) {
             document.getElementById("load").innerText = "Checking for corrupted images... " + Math.round(((index / total) * 100)) + "% (" + image.id + ")";
             if (await this.checkImageForCorruptions(image)) {
                 corrupted.push(image);

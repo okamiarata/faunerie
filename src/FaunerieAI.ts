@@ -1,15 +1,15 @@
-import {PrisbeamApp} from "./PrisbeamApp";
+import {FaunerieApp} from "./FaunerieApp";
 import {ChildProcess} from "node:child_process";
-import {PrisbeamImageType} from "libprisbeam";
+import {FaunerieImageType} from "libfaunerie";
 import * as fs from "node:fs";
 import * as cp from "node:child_process";
 
-export class PrisbeamAI {
-    instance: PrisbeamApp;
+export class FaunerieAI {
+    instance: FaunerieApp;
     aiProcess: ChildProcess;
     aiStarting: boolean;
 
-    constructor(instance: PrisbeamApp) {
+    constructor(instance: FaunerieApp) {
         this.instance = instance;
     }
 
@@ -125,11 +125,11 @@ export class PrisbeamAI {
         }
 
         await this.startAI();
-        let url = _dataStore.database.frontend.getImageFile(_dataStore.currentImage, PrisbeamImageType.ViewURL);
+        let url = _dataStore.database.frontend.getImageFile(_dataStore.currentImage, FaunerieImageType.ViewURL);
         let data: any;
 
         if (url.startsWith("blob:") || url.startsWith("pbip:")) {
-            fs.writeFileSync(_dataStore.appData + "/.temp", protectedDecode(fs.readFileSync(_dataStore.database.frontend.getImageFile(_dataStore.currentImage, PrisbeamImageType.ViewFile))));
+            fs.writeFileSync(_dataStore.appData + "/.temp", protectedDecode(fs.readFileSync(_dataStore.database.frontend.getImageFile(_dataStore.currentImage, FaunerieImageType.ViewFile))));
             url = "file://" + (_dataStore.appData + "/.temp").replaceAll("\\", "/");
         }
 

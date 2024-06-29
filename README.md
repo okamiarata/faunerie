@@ -1,12 +1,12 @@
-# Prisbeam
-A browser and search engine for local copies of various image boards (Derpibooru, Furbooru, e621, ...)
+# Faunerie
+A browser and search engine for local copies of various image boards (e621, Derpibooru, Furbooru, ...)
 
 ## Development
 Assuming you are using macOS or Linux. Other POSIX systems won't work as Electron does not have binaries for these.
 
 ### Cloning
 ```
-git clone https://source.equestria.dev/equestria.dev/prisbeam
+git clone https://github.com/equestria-dev/faunerie
 ```
 
 ### Setup

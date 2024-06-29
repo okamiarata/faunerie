@@ -1,10 +1,10 @@
-import {PrisbeamApp} from "./PrisbeamApp";
-import {PrisbeamListType} from "libprisbeam";
+import {FaunerieApp} from "./FaunerieApp";
+import {FaunerieListType} from "libfaunerie";
 
-export class PrisbeamSearch {
-    instance: PrisbeamApp;
+export class FaunerieSearch {
+    instance: FaunerieApp;
 
-    constructor(instance: PrisbeamApp) {
+    constructor(instance: FaunerieApp) {
         this.instance = instance;
     }
 
@@ -22,8 +22,8 @@ export class PrisbeamSearch {
         document.getElementById("pages").style.display = "none";
         document.getElementById("search-error").innerHTML = `
             <p><b>${this.resolveError(e)}</b></p>
-            <p>Prisbeam uses the same search query format as Derpibooru/Philomena. To make sure you make correct use of the search syntax, you can try to search for the same query on Derpibooru directly (if possible). Please keep in mind that fuzzy matching, boosting, escaping, the <code>faved_by</code> and <code>uploader</code> fields as well as the <code>my:hidden</code> are not supported.</code></p>
-            <p>If you think something is wrong with Prisbeam, please send a bug report, so we can fix it.</p>
+            <p>Faunerie uses the same search query format as Derpibooru/Philomena. To make sure you make correct use of the search syntax, you can try to search for the same query on Derpibooru directly (if possible). Please keep in mind that fuzzy matching, boosting, escaping, the <code>faved_by</code> and <code>uploader</code> fields as well as the <code>my:hidden</code> are not supported.</code></p>
+            <p>If you think something is wrong with Faunerie, please send a bug report, so we can fix it.</p>
             <hr>
             <details>
                 <summary>Show technical information</summary>
@@ -38,7 +38,7 @@ export class PrisbeamSearch {
     async displayAll() {
         this.instance.dataStore.page = 1;
         this.instance.dataStore.searching = false;
-        this.instance.dataStore.currentView = await this.instance.dataStore.database.frontend.getAllImages(PrisbeamListType.Array) as any[];
+        this.instance.dataStore.currentView = await this.instance.dataStore.database.frontend.getAllImages(FaunerieListType.Array) as any[];
         this.instance.display.updateDisplay();
     }
 

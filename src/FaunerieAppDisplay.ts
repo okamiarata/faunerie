@@ -1,13 +1,13 @@
-import {PrisbeamApp} from "./PrisbeamApp";
-import {PrisbeamImageType} from "libprisbeam";
+import {FaunerieApp} from "./FaunerieApp";
+import {FaunerieImageType} from "libfaunerie";
 import * as fs from "node:fs";
-import {PrisbeamUtilities} from "./PrisbeamUtilities";
+import {FaunerieUtilities} from "./FaunerieUtilities";
 import {shell} from "@electron/remote";
 
-export class PrisbeamAppDisplay {
-    private instance: PrisbeamApp;
+export class FaunerieAppDisplay {
+    private instance: FaunerieApp;
 
-    constructor(app: PrisbeamApp) {
+    constructor(app: FaunerieApp) {
         this.instance = app;
     }
 
@@ -37,7 +37,7 @@ export class PrisbeamAppDisplay {
 
     getThumbnailHTML(i: any) {
         if (i['representations']['thumb'].endsWith(".webm")) i['representations']['thumb'] = i['representations']['thumb'].substring(0, i['representations']['thumb'].length - 5) + ".gif";
-        let thumbnail = this.instance.dataStore.database.frontend.getImageFile(i, PrisbeamImageType.ThumbnailURL);
+        let thumbnail = this.instance.dataStore.database.frontend.getImageFile(i, FaunerieImageType.ThumbnailURL);
 
         // noinspection CssUnknownTarget
         return `
@@ -174,15 +174,15 @@ export class PrisbeamAppDisplay {
 
         if (_dataStore.searching) {
             if (_dataStore.loadedFromCache) {
-                document.title = "Searching for " + (document.getElementById("search") as HTMLInputElement).value.trim() + " (page " + _dataStore.page + "/" + totalPages + ") — Prisbeam (Cached)";
+                document.title = "Searching for " + (document.getElementById("search") as HTMLInputElement).value.trim() + " (page " + _dataStore.page + "/" + totalPages + ") — Faunerie (Cached)";
             } else {
-                document.title = "Searching for " + (document.getElementById("search") as HTMLInputElement).value.trim() + " (page " + _dataStore.page + "/" + totalPages + ") — Prisbeam";
+                document.title = "Searching for " + (document.getElementById("search") as HTMLInputElement).value.trim() + " (page " + _dataStore.page + "/" + totalPages + ") — Faunerie";
             }
         } else {
             if (_dataStore.loadedFromCache) {
-                document.title = "All images (page " + _dataStore.page + "/" + totalPages + ") — Prisbeam (Cached)";
+                document.title = "All images (page " + _dataStore.page + "/" + totalPages + ") — Faunerie (Cached)";
             } else {
-                document.title = "All images (page " + _dataStore.page + "/" + totalPages + ") — Prisbeam";
+                document.title = "All images (page " + _dataStore.page + "/" + totalPages + ") — Faunerie";
             }
         }
     }
@@ -229,7 +229,7 @@ export class PrisbeamAppDisplay {
                 ? "</span> (<span class='selectable'>" + _dataStore.currentImage.source_name + "</span>)"
                 : "") +
             "" +
-            PrisbeamUtilities.getMimeBadge(_dataStore.currentImage.mime_type)
+            FaunerieUtilities.getMimeBadge(_dataStore.currentImage.mime_type)
     }
 
     displayImageSize() {
@@ -237,28 +237,28 @@ export class PrisbeamAppDisplay {
         let size = 0;
         let sizeExplanation = [];
 
-        let file = _dataStore.database.frontend.getImageFile(_dataStore.currentImage, PrisbeamImageType.ViewFile);
-        let thumb = _dataStore.database.frontend.getImageFile(_dataStore.currentImage, PrisbeamImageType.ThumbnailFile);
+        let file = _dataStore.database.frontend.getImageFile(_dataStore.currentImage, FaunerieImageType.ViewFile);
+        let thumb = _dataStore.database.frontend.getImageFile(_dataStore.currentImage, FaunerieImageType.ThumbnailFile);
 
         if (file) {
             let cSize = fs.lstatSync(file).size;
             size += cSize;
-            sizeExplanation.push("Image: " + PrisbeamUtilities.formatSize(cSize));
+            sizeExplanation.push("Image: " + FaunerieUtilities.formatSize(cSize));
         }
 
         if (thumb) {
             let cSize = fs.lstatSync(thumb).size;
             size += cSize;
-            sizeExplanation.push("Thumbnail: " + PrisbeamUtilities.formatSize(cSize));
+            sizeExplanation.push("Thumbnail: " + FaunerieUtilities.formatSize(cSize));
         }
 
         let cSize = JSON.stringify(_dataStore.currentImage).length;
         size += cSize;
-        sizeExplanation.push("Metadata: " + PrisbeamUtilities.formatSize(cSize));
+        sizeExplanation.push("Metadata: " + FaunerieUtilities.formatSize(cSize));
 
         document.getElementById("preview-size").innerHTML =
             "<span data-bs-toggle='tooltip' data-bs-html='true' title='" + sizeExplanation.join("<br>") + "'>" +
-            PrisbeamUtilities.formatSize(size) + "</span>";
+            FaunerieUtilities.formatSize(size) + "</span>";
     }
 
     categorySortingNumber(cat: string) {
@@ -352,7 +352,7 @@ export class PrisbeamAppDisplay {
         document.getElementById("preview-parts-list").style.display = "none";
         document.title = "Viewing image #" + (_dataStore.currentImage.source_id ?? id) + " — " + document.title;
         document.getElementById("preview-title").innerHTML = this.buildImageTitle();
-        document.getElementById("preview-date").innerHTML = "Uploaded <span data-bs-toggle='tooltip' title='" + new Date(_dataStore.currentImage.created_at * 1000).toString() + "'>" + PrisbeamUtilities.timeAgo(_dataStore.currentImage.created_at * 1000) + "</span>";
+        document.getElementById("preview-date").innerHTML = "Uploaded <span data-bs-toggle='tooltip' title='" + new Date(_dataStore.currentImage.created_at * 1000).toString() + "'>" + FaunerieUtilities.timeAgo(_dataStore.currentImage.created_at * 1000) + "</span>";
         document.getElementById("preview-resolution").innerText = _dataStore.currentImage.width + " × " + _dataStore.currentImage.height;
         document.getElementById("preview-source-cta").innerText = "View on " + _dataStore.currentImage.source_name ?? "Derpibooru";
     }
@@ -424,7 +424,7 @@ export class PrisbeamAppDisplay {
 
     displayViewer() {
         let _dataStore = this.instance.dataStore;
-        let url = _dataStore.database.frontend.getImageFile(_dataStore.currentImage, PrisbeamImageType.ViewURL)
+        let url = _dataStore.database.frontend.getImageFile(_dataStore.currentImage, FaunerieImageType.ViewURL)
 
         if (_dataStore.currentImage.mime_type.startsWith("video/")) {
             document.getElementById("preview-content").innerHTML = `

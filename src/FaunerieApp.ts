@@ -1,36 +1,36 @@
-import {PrisbeamDataStore} from "./PrisbeamDataStore";
-import {PrisbeamListType} from "libprisbeam";
-import {PrisbeamAppDisplay} from "./PrisbeamAppDisplay";
-import {PrisbeamSettings} from "./PrisbeamSettings";
-import {PrisbeamSearch} from "./PrisbeamSearch";
-import {PrisbeamActions} from "./PrisbeamActions";
-import {PrisbeamAI} from "./PrisbeamAI";
-import {PrisbeamLoader} from "./PrisbeamLoader";
-import {PrisbeamPropertyStore} from "libprisbeam/src/PrisbeamPropertyStore";
-import {PrisbeamDerpibooru} from "./PrisbeamDerpibooru";
+import {FaunerieDataStore} from "./FaunerieDataStore";
+import {FaunerieListType} from "libfaunerie";
+import {FaunerieAppDisplay} from "./FaunerieAppDisplay";
+import {FaunerieSettings} from "./FaunerieSettings";
+import {FaunerieSearch} from "./FaunerieSearch";
+import {FaunerieActions} from "./FaunerieActions";
+import {FaunerieAI} from "./FaunerieAI";
+import {FaunerieLoader} from "./FaunerieLoader";
+import {FauneriePropertyStore} from "libfaunerie/src/FauneriePropertyStore";
+import {FaunerieDerpibooru} from "./FaunerieDerpibooru";
 
-export class PrisbeamApp {
-    dataStore: PrisbeamDataStore;
+export class FaunerieApp {
+    dataStore: FaunerieDataStore;
     bootstrap: any;
-    display: PrisbeamAppDisplay;
-    settings: PrisbeamSettings;
-    search: PrisbeamSearch;
-    actions: PrisbeamActions;
-    ai: PrisbeamAI;
-    loader: PrisbeamLoader;
-    propertyStore: PrisbeamPropertyStore;
-    derpibooru: PrisbeamDerpibooru;
+    display: FaunerieAppDisplay;
+    settings: FaunerieSettings;
+    search: FaunerieSearch;
+    actions: FaunerieActions;
+    ai: FaunerieAI;
+    loader: FaunerieLoader;
+    propertyStore: FauneriePropertyStore;
+    derpibooru: FaunerieDerpibooru;
 
     constructor(bootstrap: any) {
         this.bootstrap = bootstrap;
-        this.dataStore = new PrisbeamDataStore(this);
-        this.display = new PrisbeamAppDisplay(this);
-        this.settings = new PrisbeamSettings(this);
-        this.search = new PrisbeamSearch(this);
-        this.actions = new PrisbeamActions(this);
-        this.ai = new PrisbeamAI(this);
-        this.loader = new PrisbeamLoader(this);
-        this.derpibooru = new PrisbeamDerpibooru(this);
+        this.dataStore = new FaunerieDataStore(this);
+        this.display = new FaunerieAppDisplay(this);
+        this.settings = new FaunerieSettings(this);
+        this.search = new FaunerieSearch(this);
+        this.actions = new FaunerieActions(this);
+        this.ai = new FaunerieAI(this);
+        this.loader = new FaunerieLoader(this);
+        this.derpibooru = new FaunerieDerpibooru(this);
 
         this.search.loadSearchModule();
     }
@@ -48,7 +48,7 @@ export class PrisbeamApp {
 
         this.dataStore.loaded = true;
         this.dataStore.page = 1;
-        this.dataStore.currentView = await this.dataStore.database.frontend.getAllImages(PrisbeamListType.Array) as any[];
+        this.dataStore.currentView = await this.dataStore.database.frontend.getAllImages(FaunerieListType.Array) as any[];
         this.display.updateDisplay();
 
         this.dataStore.loader.hide();

@@ -46,7 +46,7 @@ db.serialize(async () => {
         let res = await fetch("https://e621.net/posts.json?page=" + page + "&limit=320&tags=" + encodeURIComponent("fav:" + API_ID), {
             headers: {
                 "Authorization": "Basic " + btoa(TOKEN),
-                "User-Agent": "Mozilla/5.0 (+Prisbeam; https://source.equestria.dev/equestria.dev/prisbeam)"
+                "User-Agent": "Mozilla/5.0 (+Faunerie; https://github.com/equestria-dev/faunerie)"
             }
         });
 

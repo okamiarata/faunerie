@@ -19,7 +19,7 @@ function open() {
     global.win = new BrowserWindow({
         width: 1500,
         minWidth: 800,
-        title: "Prisbeam",
+        title: "Faunerie",
         height: 800,
         minHeight: 450,
         webPreferences: {

@@ -1,5 +1,5 @@
 import {ipcRenderer} from "electron";
-import {PrisbeamApp} from "./PrisbeamApp";
+import {FaunerieApp} from "./FaunerieApp";
 
 let loaded = false;
 
@@ -10,7 +10,7 @@ window.onload = () => {
 // noinspection JSUnusedGlobalSymbols
 export function runApp(bootstrap: any) {
     ipcRenderer.on('path', (_, appDataPath) => {
-        let instance = window['instance'] = new PrisbeamApp(bootstrap);
+        let instance = window['instance'] = new FaunerieApp(bootstrap);
         instance.dataStore.appData = appDataPath;
 
         let loadInterval = setInterval(() => {
