@@ -45,6 +45,7 @@ app.whenReady().then(() => {
 
                 let percent = 0;
                 let data = (d) => {
+                    console.log(d);
                     let lines = d.trim().split("\n");
                     let line = lines[lines.length - 1];
 
@@ -75,6 +76,7 @@ app.whenReady().then(() => {
 
                 let percent = 0;
                 let data = (d) => {
+                    console.log(d);
                     let lines = d.trim().split("\n");
                     let line = lines[lines.length - 1];
 
