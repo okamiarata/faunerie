@@ -1,6 +1,6 @@
 {
   "main": "main.js",
-  "version": "3.0.4",
+  "version": "3.1.0",
   "scripts": {
     "install": "cd updater && npm install && cd ..",
     "postinstall": "echo \"============================\n\nThank you for developing on Faunerie!\n\n- Run 'npm run build' to build TypeScript code\n- Run 'npm run debug' to start the application in debug mode\n- Run 'npm run debug-updater' to start Faunerie Updater in debug mode\n- Run 'npm run release' to build the release application\n\n============================\"",
