@@ -8,8 +8,6 @@ updater/node_modules
 ai/*.pt
 src/*.js
 src/*.js.map
-sql/mac
-sql/win
 e621/*.csv
 e621/tags.json
 e621/tag_aliases.json
