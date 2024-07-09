@@ -8,6 +8,8 @@ updater/node_modules
 ai/*.pt
 src/*.js
 src/*.js.map
+sql/mac
+sql/win
 e621/*.csv
 e621/tags.json
 e621/tag_aliases.json
@@ -15,3 +17,12 @@ e621/parsed_tags.json
 e621/node_modules
 e621/credentials.json
 intimate/build
+client/src/node_modules
+client/src/*.js
+client/src/*.js.map
+client/src/lib/src/*.js
+client/src/lib/*.js
+client/src/lib/src/*.js.map
+client/src/lib/*.js.map
+client/src/lib/node_modules
+server/target
