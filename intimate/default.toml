@@ -21,13 +21,16 @@ source = "Your Derpibooru username here"
 # are possible but not officially supported.
 proportion = 1
 
+# If you have images stored in a Faunerie database, you can use this database as an
+# image source to speed up the loading process, especially when you are on a slow
+# network.
+# Note that Intimate will still work if your cache is unavailable, and will simply
+# download files from Derpibooru's CDN.
+faunerie_cache = "/path/to/your/faunerie/database"
+
 # Other modules
 # Configuration of other modules is done similarly to Derpibooru. Simply uncomment
 # (remove the #) the sections you want.
-
-#[modules.e621]
-#source = "Your e621 username here"
-#proportion = 1
 
 #[modules.local]
 #source = "/path/to/your/files"

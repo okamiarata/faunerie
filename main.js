@@ -1,22 +1,18 @@
-/*
-Developers! Don't rewrite this in TypeScript!
-Only the Electron renderer code should be rewritten in TypeScript
- */
-
-const { app, dialog, BrowserWindow, ipcMain, protocol} = require('electron');
+const {app, dialog, BrowserWindow, ipcMain, protocol} = require('electron');
 const zlib = require('zlib');
 const fs = require('fs');
 const util = require('util');
-const { userInfo } = require('os');
+const {userInfo} = require('os');
+const remote = require("@electron/remote/main");
 
 protocol.registerSchemesAsPrivileged([
     { scheme: 'pbip', privileges: { bypassCSP: true, secure: true, stream: true, corsEnabled: false, supportFetchAPI: true } }
 ])
 
-require('@electron/remote/main').initialize();
+remote.initialize();
 
 function open() {
-    global.win = new BrowserWindow({
+    let win = global.win = new BrowserWindow({
         width: 1500,
         minWidth: 800,
         title: "Faunerie",
@@ -40,7 +36,7 @@ function open() {
         },
     });
 
-    require("@electron/remote/main").enable(win.webContents);
+    remote.enable(win.webContents);
 
     win.on('close', async (e) => {
         if (await win.webContents.executeJavaScript("instance?.dataStore.unloaded;")) e.preventDefault();
@@ -49,6 +45,7 @@ function open() {
 
     win.loadFile("./dom/index.html");
     win.on('ready-to-show', () => {
+        //@ts-ignore
         win.send("path", app.getPath("userData"));
     });
 

@@ -4,99 +4,107 @@
     <meta charset="UTF-8">
     <title>Intimate</title>
     <link href="./bs5/bootstrap.min.css" rel="stylesheet">
+    <link href="./bs5/bootstrap-icons.min.css" rel="stylesheet">
     <script src="./bs5/bootstrap.bundle.min.js"></script>
 </head>
 <body data-bs-theme="dark" style="position: fixed; inset: 0;">
     <div style="position: fixed; top: 0; left: 0; right: 0; height: 257px; -webkit-app-region: drag; z-index: 99999;"></div>
+
     <div id="bg-cover" class="bg-dark-subtle" style="height: 275px; position: fixed; top: 0; left: 0; right: 0; z-index: 10; transition: opacity 200ms; pointer-events: none; opacity: 1;"></div>
     <div id="bg-img" class="bg-dark-subtle" style="height: 275px; z-index: 0; background-position: center; background-size: cover;"></div>
-    <div style="text-align: center;">
-        <div class="btn-group">
-            <div class="dropdown" style="position: relative; top: -18px; z-index: 999999; -webkit-app-region: no-drag;">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" disabled id="main-btn">
-                    Get started
-                </button>
-                <ul class="dropdown-menu" style="z-index: 999999; -webkit-app-region: no-drag;">
-                    <li><a class="dropdown-item" href="#" onclick="start(true, true, true);">Ponies · Furries · Local</a></li>
-                    <li><a class="dropdown-item" href="#" onclick="start(true, false, true);">Ponies · Local</a></li>
-                    <li><a class="dropdown-item" href="#" onclick="start(false, true, true);">Furries · Local</a></li>
-                    <li><a class="dropdown-item" href="#" onclick="start(true, true, false);">Ponies · Furries</a></li>
-                    <li><a class="dropdown-item" href="#" onclick="start(true, false, false);">Ponies</a></li>
-                    <li><a class="dropdown-item" href="#" onclick="start(false, true, false);">Furries</a></li>
-                    <li><a class="dropdown-item" href="#" onclick="start(false, false, true);">Local</a></li>
-                </ul>
+
+    <div style="display: flex; align-items: center; height: 196px; text-align: center; margin-top: 15px;">
+        <div id="page-0" class="page" style="width: 100%; display: none;">
+            <h3 style="margin-bottom: 20px;">Which sources should we use?</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 10px; margin: 0 20px;">
+                <span onclick="window.preferences.sources = 0; page(2);" class="btn btn-outline-light" style="max-width: 145px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i class="bi bi-cloud"></i>
+                    Online only
+                </span>
+                <span onclick="window.preferences.sources = 1; page(2);" class="btn btn-outline-light" style="max-width: 145px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i class="bi bi-hdd"></i>
+                    Local only
+                </span>
+                <span onclick="window.preferences.sources = 2; page(2);" class="btn btn-outline-light" style="max-width: 145px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i class="bi bi-layers"></i>
+                    Both
+                </span>
             </div>
+            <a class="small" href="#" onclick="start();" style="margin-top: 20px; text-align: center; display: block;">Skip and start immediately</a>
+        </div>
+
+        <div id="page-2" class="page" style="width: 100%; display: none;">
+            <h3 style="margin-bottom: 20px;">Which types of content should we play?</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 10px; margin: 0 20px;">
+                <span onclick="window.preferences.content = 0; start();" class="btn btn-outline-light" style="max-width: 145px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i class="bi bi-image"></i>
+                    Images only
+                </span>
+                <span onclick="window.preferences.content = 1; start();" class="btn btn-outline-light" style="max-width: 145px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i class="bi bi-film"></i>
+                    Videos only
+                </span>
+                <span onclick="window.preferences.content = 2; start();" class="btn btn-outline-light" style="max-width: 145px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i class="bi bi-collection"></i>
+                    Both
+                </span>
+            </div>
+            <a class="small" href="#" onclick="start();" style="margin-top: 20px; text-align: center; display: block;">Skip and start immediately</a>
         </div>
     </div>
-    <div style="text-align: center; margin-top: 15px;">
-        <h3 style="margin-bottom: 0;">Spend some time with yourself</h3>
-        <h3 id="cta"></h3>
+
+    <div style="position: fixed; bottom: 0; left: 0; right: 0; height: 64px; padding: 0 20px; background-color: rgba(0, 0, 0, .25); display: flex; align-items: center; width: 100%;">
+        <div style="opacity: .5;" class="btn-group">
+            <span class="btn btn-outline-light" onclick="settings();" title="Settings">
+                <i class="bi bi-gear"></i>
+            </span>
+            <span class="btn btn-outline-light" onclick="location.reload();" title="Reload settings">
+                <i class="bi bi-arrow-clockwise"></i>
+            </span>
+            <span class="btn btn-outline-light" onclick="devtools();" title="Developer options">
+                <i class="bi bi-code"></i>
+            </span>
+            <span class="btn btn-outline-light" onclick="about();" title="About Intimate">
+                <i class="bi bi-info-circle"></i>
+            </span>
+            <span class="btn btn-outline-light" onclick="window.close();" title="Quit Intimate">
+                <i class="bi bi-box-arrow-left"></i>
+            </span>
+        </div>
     </div>
-    <div style="position: fixed; bottom: 5px; left: 10px; opacity: .5;" class="text-muted small">© Equestria.dev Developers</div>
-    <div style="position: fixed; bottom: 5px; right: 10px; opacity: .5; -webkit-app-region: no-drag;" class="text-muted small" id="version"></div>
 
     <script>
-        function start(e621, derpibooru, local) {
-            require('electron/renderer').ipcRenderer.send("start", e621, derpibooru, local, config);
+        const fs = require('fs');
+
+        window.preferences = {
+            sources: 0,
+            content: 2
         }
 
-        try {
-            document.getElementById("version").innerText = "v" + navigator.userAgent.split("intimate/")[1].split(" ")[0];
-        } catch (e) {
-            document.getElementById("version").innerText = "v" + navigator.userAgent.split("Electron/")[1].split(" ")[0];
+        function settings() {
+            require('electron/renderer').ipcRenderer.invoke("openConfig");
         }
 
-        switch (new Date().getHours()) {
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-                document.getElementById("cta").innerText = "this night";
-                break;
+        function about() {
+            require('electron/renderer').ipcRenderer.invoke("openAbout");
+        }
 
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-            case 10:
-            case 11:
-                document.getElementById("cta").innerText = "this morning";
-                break;
+        function devtools() {
+            require('electron/renderer').ipcRenderer.invoke("openDevtools");
+        }
 
-            case 12:
-            case 13:
-                document.getElementById("cta").innerText = "before or after lunch";
-                break;
-
-            case 14:
-            case 15:
-            case 16:
-            case 17:
-                document.getElementById("cta").innerText = "this afternoon";
-                break;
-
-            case 18:
-            case 19:
-            case 20:
-            case 21:
-            case 22:
-            case 23:
-                document.getElementById("cta").innerText = "tonight";
-                break;
+        function start() {
+            require('electron/renderer').ipcRenderer.send("start", window.preferences, config);
         }
 
         function setBackground(url) {
-            console.log(url);
-            let img = document.createElement("img");
+            document.getElementById("bg-img").style.backgroundImage = 'url("' + url + '")';
+            document.getElementById("bg-cover").style.opacity = "0";
+        }
 
-            img.onload = () => {
-                document.getElementById("bg-img").style.backgroundImage = 'url("' + url + '")';
-                document.getElementById("bg-cover").style.opacity = "0";
-            }
-
-            img.src = url;
+        function page(id) {
+            Array.from(document.getElementsByClassName("page")).map(i => i.style.display = "none");
+            document.getElementById("page-" + id).style.display = "";
         }
 
         window.onload = () => {
@@ -105,7 +113,7 @@
                 const config = window.config = require('toml').parse(require('fs').readFileSync(configPath).toString());
 
                 if (!config.configured) {
-                    alert("Intimate is currently not configured.\n\nThe configuration file will open in your favorite text editor. Please go through it and adjust the settings to your liking, and then restart Intimate.\n\nIf you have already configured Intimate, make sure the \"configured\" options is set to true.");
+                    alert("Intimate is currently not configured.\n\nThe configuration file will open in your favorite text editor. Please go through it and adjust the settings to your liking, and then restart Intimate.\n\nIf you have already configured Intimate, make sure the \"configured\" option is set to true.");
                     await require('electron/renderer').ipcRenderer.invoke("openConfig");
                     window.close();
                     return;
@@ -113,26 +121,17 @@
 
                 let seed = Buffer.from(crypto.getRandomValues(new Uint8Array(32))).toString("hex");
                 let derpibooru;
-                let e621;
 
-                if (config.modules.derpibooru) derpibooru = (await (await fetch("https://derpibooru.org/api/v1/json/search/images/?q=suggestive,%20faved_by:" + encodeURIComponent(config.modules.derpibooru.source) + ",%20mime_type:image/*,%20-mime_type:image/gif,%20-animated&per_page=1&filter_id=56027&sf=random:" + seed)).json())["images"][0]["view_url"];
-                if (config.modules.e621) e621 = (await (await fetch("https://e621.net/posts.json?limit=1&tags=order:random%20fav:" + encodeURIComponent(config.modules.e621.source) + "%20rating:q%20randseed:" + seed)).json())["posts"][0]["file"]["url"];
+                if (config.modules.derpibooru) derpibooru = (await (await fetch("https://derpibooru.org/api/v1/json/search/images/?q=suggestive,%20faved_by:" + encodeURIComponent(config.modules.derpibooru.source) + ",%20mime_type:image/*,%20-mime_type:image/gif,%20-animated&per_page=1&filter_id=56027&sf=random:" + seed)).json())["images"].map(i => {
+                    if (!config.modules.derpibooru['faunerie_cache']) return i;
+                    if (!fs.existsSync(config.modules.derpibooru['faunerie_cache'] + "/images/" + i['sha512_hash'].substring(0, 1) + "/" + i['sha512_hash'].substring(0, 2) + "/" + i['sha512_hash'].substring(0, 3) + "/10" + i['id'] + ".bin")) return i;
+                    i['view_url'] = "pbip://" + config.modules.derpibooru['faunerie_cache'] + "/images/" + i['sha512_hash'].substring(0, 1) + "/" + i['sha512_hash'].substring(0, 2) + "/" + i['sha512_hash'].substring(0, 3) + "/10" + i['id'] + ".bin";
+                    return i;
+                })[0]["view_url"];
 
-                console.log(derpibooru, e621);
-
-                setTimeout(() => {
-                    if (e621) {
-                        if (derpibooru) {
-                            setBackground(Math.random() > 0.1 ? derpibooru : e621);
-                        } else {
-                            setBackground(e621);
-                        }
-                    } else if (derpibooru) {
-                        setBackground(derpibooru);
-                    }
-
-                    document.getElementById("main-btn").disabled = false;
-                });
+                console.log(derpibooru);
+                setBackground(derpibooru);
+                page(0);
             });
         }
     </script>

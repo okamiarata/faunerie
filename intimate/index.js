@@ -1,18 +1,22 @@
-const { app, BrowserWindow, ipcMain, dialog, clipboard, shell, Menu } = require('electron/main');
+const { app, BrowserWindow, ipcMain, dialog, clipboard, shell, Menu, protocol } = require('electron/main');
 const fs = require("fs");
+const util = require("util");
+const zlib = require("zlib");
 
-let e621 = false;
-let derpibooru = false;
-let local = false;
+let preferences = null;
 let globalConfig;
 
 let mainWindow;
 let fullscreenWindow;
 
+protocol.registerSchemesAsPrivileged([
+    { scheme: 'pbip', privileges: { bypassCSP: true, secure: true, stream: true, corsEnabled: false, supportFetchAPI: true } }
+])
+
 function createWindow () {
     mainWindow = new BrowserWindow({
-        width: 400,
-        height: 450,
+        width: 500,
+        height: 550,
         resizable: false,
         maximizable: false,
         fullscreenable: false,
@@ -25,6 +29,7 @@ function createWindow () {
             contextIsolation: false
         }
     });
+    mainWindow.webContents.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.91 Safari/537.36");
 
     mainWindow.loadFile('index.html');
     mainWindow.setMenu(menu);
@@ -91,8 +96,31 @@ let menu = Menu.buildFromTemplate([
 ]);
 Menu.setApplicationMenu(menu);
 
-
 app.whenReady().then(() => {
+    protocol.handle('pbip', async (req) => {
+        const { pathname, searchParams } = new URL(req.url);
+        let mime = searchParams.get("mime") ?? "application/octet-stream";
+
+        const inflateRawSync = util.promisify(zlib.inflateRaw);
+
+        try {
+            let file = await fs.promises.readFile(pathname);
+            let data = await inflateRawSync(file);
+
+            return new Response(data, {
+                status: 200,
+                headers: { 'content-type': mime }
+            });
+        } catch (e) {
+            console.error(e);
+
+            return new Response(e.stack, {
+                status: 500,
+                headers: { 'content-type': 'text/plain' }
+            });
+        }
+    });
+
     app.setAboutPanelOptions({
         applicationName: "Intimate",
         applicationVersion: require('./package.json').version,
@@ -117,10 +145,8 @@ app.on('before-quit', () => {
     try { if (mainWindow) fullscreenWindow.close(); } catch (e) { console.error(e); }
 });
 
-ipcMain.on('start', (_, enableDerpibooru, enableE621, enableLocal, config) => {
-    derpibooru = enableDerpibooru;
-    e621 = enableE621;
-    local = enableLocal;
+ipcMain.on('start', (_, prefs, config) => {
+    preferences = prefs;
     globalConfig = config;
 
     mainWindow.close();
@@ -137,6 +163,7 @@ ipcMain.on('start', (_, enableDerpibooru, enableE621, enableLocal, config) => {
             contextIsolation: false
         }
     });
+    fullscreenWindow.webContents.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.91 Safari/537.36");
 
     fullscreenWindow.loadFile("fullscreen.html");
     fullscreenWindow.on('close', () => {
@@ -147,11 +174,7 @@ ipcMain.on('start', (_, enableDerpibooru, enableE621, enableLocal, config) => {
 ipcMain.handle('getConfig', () => {
     return {
         ...globalConfig,
-        _show: {
-            e621,
-            derpibooru,
-            local
-        }
+        _sessionPreferences: preferences
     };
 });
 
@@ -218,4 +241,12 @@ ipcMain.handle('config', () => {
 
 ipcMain.handle("openConfig", () => {
     shell.openPath(app.getPath("userData") + "/config.toml");
+});
+
+ipcMain.handle("openAbout", () => {
+    app.showAboutPanel();
+});
+
+ipcMain.handle("openDevtools", () => {
+    mainWindow.webContents.toggleDevTools();
 });
