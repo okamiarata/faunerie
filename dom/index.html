@@ -90,8 +90,8 @@
         </div>
     </div>
 
-    <div id="app" class="container disabled" style="padding-top: 50px;">
-        <div style="-webkit-app-region: drag; position: fixed; top: 0; left: 0; right: 0; backdrop-filter: blur(50px); background-color: rgba(33,33,33,0.75); border-bottom: 1px solid #111;" id="filter-bar">
+    <div id="app" class="disabled" style="padding-top: 50px;">
+        <div style="z-index: 99; -webkit-app-region: drag; position: fixed; top: 0; left: 0; right: 0; backdrop-filter: blur(50px); background-color: rgba(33,33,33,0.75); border-bottom: 1px solid #111;" id="filter-bar">
             <div style="display: grid; grid-template-columns: minmax(130px, 1fr) 2fr minmax(260px, 1fr); grid-gap: 10px;">
                 <div style="text-align: center;">
                     <a class="fancy-btn" id="logo" onclick="instance.actions.goHome();" href="#" style="padding: 5px 10px; display: inline-block; color: white; text-decoration: none; -webkit-app-region: no-drag;">
@@ -136,33 +136,35 @@
             </div>
         </div>
 
-        <div style="margin-top: 42px;">
-            <div id="search-error" style="margin-bottom: 20px; margin-top: 20px; display: none;" class="alert alert-danger"></div>
-            <div id="search-warning" style="margin-bottom: 20px; margin-top: 20px; display: none;" class="alert alert-warning"></div>
-            <div id="images" style="margin-bottom: 20px; margin-top: 20px; display: grid; grid-template-columns: repeat(5, 1fr); grid-gap: 10px;"></div>
-            <div style="margin-bottom: 50px; display: grid; grid-template-columns: 1fr max-content;" id="footer">
-                <div id="pages"></div>
-                <div id="sort">
-                    <select tabindex="-1" id="sorting" onchange="instance.display.updateDisplay();" class="form-select" style="width: max-content; display: inline-block;">
-                        <option selected value="new">Sort by date</option>
-                        <optgroup label="Popularity">
-                            <option value="popular">Sort by score</option>
-                            <option value="relevance">Sort by relevance</option>
-                        </optgroup>
-                        <optgroup label="Sizes">
-                            <option value="resolution">Sort by resolution</option>
-                            <option value="size">Sort by size</option>
-                            <option value="duration">Sort by duration</option>
-                        </optgroup>
-                        <optgroup label="Technical">
-                            <option value="id">Sort by image ID</option>
-                            <option value="tag">Sort by tags</option>
-                        </optgroup>
-                    </select>
-                    <select tabindex="-1" id="order" onchange="instance.display.updateDisplay();" class="form-select" style="width: max-content; display: inline-block;">
-                        <option value="up">↑ Ascending</option>
-                        <option selected value="down">↓ Descending</option>
-                    </select>
+        <div id="app-area" style="z-index: 1; position: fixed; top: 0; left: 0; right: 0; overflow: auto; bottom: 0;">
+            <div style="padding-top: 42px;" class="container">
+                <div id="search-error" style="margin-bottom: 20px; margin-top: 20px; display: none;" class="alert alert-danger"></div>
+                <div id="search-warning" style="margin-bottom: 20px; margin-top: 20px; display: none;" class="alert alert-warning"></div>
+                <div id="images" style="margin-bottom: 20px; margin-top: 20px; display: grid; grid-template-columns: repeat(5, 1fr); grid-gap: 10px;"></div>
+                <div style="margin-bottom: 50px; display: grid; grid-template-columns: 1fr max-content;" id="footer">
+                    <div id="pages"></div>
+                    <div id="sort">
+                        <select tabindex="-1" id="sorting" onchange="instance.display.updateDisplay();" class="form-select" style="width: max-content; display: inline-block;">
+                            <option selected value="new">Sort by date</option>
+                            <optgroup label="Popularity">
+                                <option value="popular">Sort by score</option>
+                                <option value="relevance">Sort by relevance</option>
+                            </optgroup>
+                            <optgroup label="Sizes">
+                                <option value="resolution">Sort by resolution</option>
+                                <option value="size">Sort by size</option>
+                                <option value="duration">Sort by duration</option>
+                            </optgroup>
+                            <optgroup label="Technical">
+                                <option value="id">Sort by image ID</option>
+                                <option value="tag">Sort by tags</option>
+                            </optgroup>
+                        </select>
+                        <select tabindex="-1" id="order" onchange="instance.display.updateDisplay();" class="form-select" style="width: max-content; display: inline-block;">
+                            <option value="up">↑ Ascending</option>
+                            <option selected value="down">↓ Descending</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>

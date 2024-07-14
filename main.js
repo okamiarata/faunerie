@@ -25,7 +25,7 @@ function open() {
         },
         titleBarStyle: "hidden",
         titleBarOverlay: {
-            color: "transparent",
+            color: "#00000000",
             symbolColor: "#ffffff",
             height: 43
         },
@@ -39,9 +39,10 @@ function open() {
     remote.enable(win.webContents);
 
     win.on('close', async (e) => {
-        if (await win.webContents.executeJavaScript("instance?.dataStore.unloaded;")) e.preventDefault();
-        await win.webContents.executeJavaScript("instance?.safeClose();");
-    })
+        e.preventDefault();
+        if (await win.webContents.executeJavaScript("instance?.dataStore.unloaded;")) win.destroy();
+        await win.webContents.executeJavaScript("instance?.safeUnload().then(() => { require('electron').ipcRenderer.send('destroy'); });");
+    });
 
     win.loadFile("./dom/index.html");
     win.on('ready-to-show', () => {
@@ -68,6 +69,10 @@ function open() {
             properties: ["openFile", "treatPackageAsDirectory", "dontAddToRecent"]
         });
     });
+
+    ipcMain.on('destroy', () => {
+        win.destroy();
+    });
 }
 
 if (app.getName() !== "Electron") {
@@ -80,8 +85,10 @@ if (app.getName() !== "Electron") {
 
 app.whenReady().then(() => {
     protocol.handle('pbip', async (req) => {
-        const { pathname, searchParams } = new URL(req.url);
+        let { pathname, searchParams } = new URL(req.url);
         let mime = searchParams.get("mime") ?? "application/octet-stream";
+
+        if (process.platform === "win32") pathname = pathname.substring(1);
 
         const inflateRawSync = util.promisify(zlib.inflateRaw);
 
@@ -101,7 +108,6 @@ app.whenReady().then(() => {
                 headers: { 'content-type': 'text/plain' }
             });
         }
-
     });
 
     open();

@@ -2,7 +2,7 @@
 A browser and search engine for local copies of various image boards (e621, Derpibooru, Furbooru, ...)
 
 ## Development
-Assuming you are using macOS or Linux. Other POSIX systems won't work as Electron does not have binaries for these.
+Assuming you are using macOS, Windows or Linux. Other POSIX systems won't work as Electron does not have binaries for these.
 
 ### Cloning
 ```
@@ -27,5 +27,6 @@ npm run debug-updater
 ### Building
 ```
 # This will run 'npm audit fix' and 'npm install' to update dependencies if needed
-npm run release
+npm run release-unix  # For Unix systems
+npm run release-win   # For Windows
 ```

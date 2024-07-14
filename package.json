@@ -3,11 +3,12 @@
   "version": "3.2.0",
   "scripts": {
     "install": "cd updater && npm install && cd ..",
-    "postinstall": "echo \"============================\n\nThank you for developing on Faunerie!\n\n- Run 'npm run build' to build TypeScript code\n- Run 'npm run debug' to start the application in debug mode\n- Run 'npm run debug-updater' to start Faunerie Updater in debug mode\n- Run 'npm run release' to build the release application\n\n============================\"",
+    "postinstall": "echo \"============================\n\nThank you for developing on Faunerie!\n\n- Run 'npm run build' to build TypeScript code\n- Run 'npm run debug' to start the application in debug mode\n- Run 'npm run debug-updater' to start Faunerie Updater in debug mode\n- Run 'npm run release-<platform>' to build the release application\n\n============================\"",
     "build": "cd src && tsc && cd ..",
     "debug": "npm run build && electron main.js",
     "debug-updater": "npm run build && cd updater && npx electron main.js && cd ..",
-    "release": "npm audit fix && npm install && ./build.sh"
+    "release-unix": "npm audit fix && npm install && ./build.sh",
+    "release-win": "npm audit fix && npm install && build.bat"
   },
   "dependencies": {
     "@electron/remote": "^2.1.2",

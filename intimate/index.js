@@ -22,6 +22,10 @@ function createWindow () {
         fullscreenable: false,
         simpleFullscreen: true,
         titleBarStyle: "hidden",
+        titleBarOverlay: {
+            color: "#21252977",
+            symbolColor: "#ffffff"
+        },
         backgroundColor: "#212529",
         autoHideMenuBar: true,
         webPreferences: {
@@ -98,8 +102,10 @@ Menu.setApplicationMenu(menu);
 
 app.whenReady().then(() => {
     protocol.handle('pbip', async (req) => {
-        const { pathname, searchParams } = new URL(req.url);
+        let { pathname, searchParams } = new URL(req.url);
         let mime = searchParams.get("mime") ?? "application/octet-stream";
+
+        if (process.platform === "win32") pathname = pathname.substring(1);
 
         const inflateRawSync = util.promisify(zlib.inflateRaw);
 
@@ -140,11 +146,6 @@ app.on('window-all-closed', () => {
     app.quit();
 });
 
-app.on('before-quit', () => {
-    try { if (mainWindow) mainWindow.close(); } catch (e) { console.error(e); }
-    try { if (mainWindow) fullscreenWindow.close(); } catch (e) { console.error(e); }
-});
-
 ipcMain.on('start', (_, prefs, config) => {
     preferences = prefs;
     globalConfig = config;
@@ -158,6 +159,7 @@ ipcMain.on('start', (_, prefs, config) => {
         resizable: false,
         maximizable: false,
         minimizable: false,
+        autoHideMenuBar: true,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false

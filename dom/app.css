@@ -14,11 +14,11 @@ code {
 }
 
 #search {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Iosevka', 'JetBrains Mono', monospace;
 }
 
 #search::placeholder {
-    font-family: var(--bs-body-font-family) !important;
+    font-family: var(--bs-body-font-family), sans-serif !important;
     color: rgba(255, 255, 255, .5);
 }
 
@@ -411,4 +411,20 @@ select:active, select:focus {
 
 #preview-parts-list:has(.preview-tag-zone:hover) .preview-tag-zone:not(:hover):not(.hover), #preview-parts-list:has(.preview-tag-zone.hover) .preview-tag-zone:not(:hover):not(.hover) {
     opacity: .75 !important;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, .05);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, .1);
 }

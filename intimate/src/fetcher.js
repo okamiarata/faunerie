@@ -99,6 +99,7 @@ async function slideshowMain() {
             if (!config.modules.derpibooru['faunerie_cache']) return i;
             if (!fs.existsSync(config.modules.derpibooru['faunerie_cache'] + "/images/" + i['sha512_hash'].substring(0, 1) + "/" + i['sha512_hash'].substring(0, 2) + "/" + i['sha512_hash'].substring(0, 3) + "/10" + i['id'] + ".bin")) return i;
             i['view_url'] = "pbip://" + config.modules.derpibooru['faunerie_cache'] + "/images/" + i['sha512_hash'].substring(0, 1) + "/" + i['sha512_hash'].substring(0, 2) + "/" + i['sha512_hash'].substring(0, 3) + "/10" + i['id'] + ".bin";
+            if (process.platform === "win32") i['view_url'] = i['view_url'].replaceAll("\\", "/").replaceAll("pbip://", "pbip:///");
             return i;
         }));
         window.displayQueue = window.displayQueue.sort(() => Math.random() - Math.random());

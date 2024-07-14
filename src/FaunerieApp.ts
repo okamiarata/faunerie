@@ -69,6 +69,10 @@ export class FaunerieApp {
     async loadApp() {
         if (this.dataStore.loaded) return;
 
+        if (process.platform === "win32") {
+            document.getElementById("filter-bar").style.paddingRight = "96px";
+        }
+
         document.getElementById("load").innerText = "Waiting for application...";
         document.getElementById("progress").classList.remove("progress-bar-striped");
         document.getElementById("progress").style.width = "0%";
